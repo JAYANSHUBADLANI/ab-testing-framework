@@ -9,13 +9,14 @@ A clean, reusable statistical A/B testing framework built in Python. Covers hypo
 ```
 ab-testing-framework/
 ├── framework/
+│   ├── __init__.py
 │   └── ab_test.py            # Core reusable module
 ├── notebooks/
 │   ├── 01_ab_test_analysis.ipynb   # Full A/B test walkthrough (landing page)
 │   └── 02_framework_demo.ipynb     # Framework demo on 3 scenarios
 ├── visuals/                  # Saved plots (PNG)
 ├── results/
-│   └── report.json           # Experiment results
+│   └── report.json           # Experiment results output
 ├── requirements.txt
 └── README.md
 ```
@@ -33,41 +34,112 @@ ab-testing-framework/
 
 ---
 
-## Use Cases
+## Framework API — `framework/ab_test.py`
 
-| Scenario | Test Used | Framework Function |
-|---|---|---|
-| Landing page conversion rate | Two-proportion z-test | `run_ztest()` |
-| Button colour click-through | Chi-square test | `run_chi_square()` |
-| Pre-experiment planning | Sample size + MDE | `calculate_sample_size()`, `calculate_mde()` |
-| Automated reporting | JSON summary | `generate_report()` |
+### `run_ztest()`
+Two-proportion z-test for conversion rate experiments.
+
+```python
+from framework.ab_test import run_ztest
+
+result = run_ztest(
+    control_conversions   = 500,
+    control_size          = 5000,
+    treatment_conversions = 560,
+    treatment_size        = 5000,
+    alpha                 = 0.05,
+    alternative           = "larger"   # "two-sided" | "larger" | "smaller"
+)
+# Returns: z_stat, p_value, significant, absolute_lift, relative_lift, CIs
+```
 
 ---
 
-## Framework API
+### `run_chi_square()`
+Chi-square test of independence on a 2×2 contingency table.
 
 ```python
-from framework.ab_test import (
-    run_ztest,
-    run_chi_square,
-    calculate_mde,
-    calculate_sample_size,
-    generate_report
+from framework.ab_test import run_chi_square
+
+result = run_chi_square(
+    control_conversions   = 500,
+    control_size          = 5000,
+    treatment_conversions = 560,
+    treatment_size        = 5000,
 )
-
-# Two-proportion z-test
-result = run_ztest(
-    control_conversions=500, control_size=5000,
-    treatment_conversions=560, treatment_size=5000,
-    alpha=0.05
-)
-
-# Sample size planning
-n = calculate_sample_size(baseline_rate=0.10, mde=0.02, alpha=0.05, power=0.80)
-
-# Generate JSON report
-generate_report(result, path="results/report.json")
+# Returns: chi2_stat, p_value, dof, significant, cramers_v
 ```
+
+---
+
+### `calculate_mde()`
+Minimum Detectable Effect for a given experiment setup.
+
+```python
+from framework.ab_test import calculate_mde
+
+result = calculate_mde(
+    baseline_rate = 0.10,    # 10% baseline CVR
+    n_per_group   = 5000,
+    alpha         = 0.05,
+    power         = 0.80,
+)
+# Returns: mde_absolute, mde_relative
+```
+
+---
+
+### `calculate_sample_size()`
+Required sample size per group to detect a target MDE.
+
+```python
+from framework.ab_test import calculate_sample_size
+
+result = calculate_sample_size(
+    baseline_rate = 0.10,
+    mde           = 0.02,    # detect a 2pp absolute lift
+    alpha         = 0.05,
+    power         = 0.80,
+)
+# Returns: n_per_group, total_n
+```
+
+---
+
+### `generate_report()`
+Save experiment results as a structured JSON report.
+
+```python
+from framework.ab_test import generate_report
+
+generate_report(
+    experiment_name = "Homepage Redesign Q2",
+    results         = {"ztest": result, "chi_square": chi_result},
+    path            = "results/report.json",
+    metadata        = {"analyst": "Jayanshu Badlani", "date": "2026-04-27"}
+)
+```
+
+---
+
+## Use Cases
+
+| Scenario | Test | Functions Used |
+|---|---|---|
+| Landing page conversion | Two-proportion z-test | `run_ztest()`, `run_chi_square()` |
+| Email subject line CTR | One-sided z-test | `run_ztest(alternative="larger")` |
+| Button colour click-through | Chi-square | `run_chi_square()` |
+| Pre-experiment planning | Sample size + MDE | `calculate_sample_size()`, `calculate_mde()` |
+| Automated reporting | JSON export | `generate_report()` |
+
+---
+
+## Notebooks
+
+| Notebook | Description |
+|---|---|
+| `01_ab_test_analysis.ipynb` | Full walkthrough of a landing page A/B test — z-test, chi-square, MDE, sample size planning, and 4 visualizations |
+| `02_framework_demo.ipynb` | Demonstrates all 5 framework functions across 3 realistic business scenarios with combined JSON report |
 
 ---
 
@@ -88,8 +160,13 @@ pip install -r requirements.txt
 ```bash
 jupyter notebook
 ```
-- `notebooks/01_ab_test_analysis.ipynb` — full A/B test walkthrough
-- `notebooks/02_framework_demo.ipynb` — framework demo on multiple scenarios
+- `notebooks/01_ab_test_analysis.ipynb`
+- `notebooks/02_framework_demo.ipynb`
+
+### 4. Run the framework directly (self-test)
+```bash
+python -m framework.ab_test
+```
 
 ---
 
