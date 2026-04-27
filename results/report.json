@@ -1,0 +1,106 @@
+{
+  "experiment": "AB Testing Framework Demo",
+  "generated_at": "2026-04-27T09:28:38.964419Z",
+  "results": {
+    "scenario_1_landing_page": {
+      "ztest": {
+        "test": "two-proportion z-test",
+        "alternative": "two-sided",
+        "alpha": 0.05,
+        "control_cvr": 0.09,
+        "treatment_cvr": 0.108,
+        "absolute_lift": 0.018,
+        "relative_lift": 0.2,
+        "z_stat": 3.929,
+        "p_value": 8.5e-05,
+        "significant": true,
+        "ci_control": [
+          0.083916,
+          0.096084
+        ],
+        "ci_treatment": [
+          0.101402,
+          0.114598
+        ],
+        "control_n": 8500,
+        "treatment_n": 8500
+      },
+      "chi_square": {
+        "test": "chi-square test of independence",
+        "alpha": 0.05,
+        "chi2_stat": 15.4374,
+        "p_value": 8.5e-05,
+        "dof": 1,
+        "significant": true,
+        "cramers_v": 0.030134,
+        "contingency_table": [
+          [
+            918,
+            7582
+          ],
+          [
+            765,
+            7735
+          ]
+        ],
+        "expected_table": [
+          [
+            841.5,
+            7658.5
+          ],
+          [
+            841.5,
+            7658.5
+          ]
+        ]
+      }
+    },
+    "scenario_2_email_ctr": {
+      "ztest": {
+        "test": "two-proportion z-test",
+        "alternative": "larger",
+        "alpha": 0.05,
+        "control_cvr": 0.08,
+        "treatment_cvr": 0.092,
+        "absolute_lift": 0.012,
+        "relative_lift": 0.15,
+        "z_stat": 3.3154,
+        "p_value": 0.000458,
+        "significant": true,
+        "ci_control": [
+          0.075146,
+          0.084854
+        ],
+        "ci_treatment": [
+          0.086829,
+          0.097171
+        ],
+        "control_n": 12000,
+        "treatment_n": 12000
+      }
+    },
+    "scenario_3_planning": {
+      "sample_size": {
+        "n_per_group": 3213,
+        "total_n": 6426,
+        "baseline_rate": 0.08,
+        "treatment_rate": 0.1,
+        "mde": 0.02,
+        "alpha": 0.05,
+        "power": 0.8
+      },
+      "mde": {
+        "mde_absolute": 0.019624,
+        "mde_relative": 0.245305,
+        "baseline_rate": 0.08,
+        "n_per_group": 3000,
+        "alpha": 0.05,
+        "power": 0.8
+      }
+    }
+  },
+  "metadata": {
+    "author": "Jayanshu Badlani",
+    "framework": "ab_test.py v1.0"
+  }
+}
