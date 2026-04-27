@@ -1,0 +1,57 @@
+name: Execute Notebooks & Commit Outputs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-ab-${{ hashFiles('requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pandas numpy scipy statsmodels matplotlib seaborn \
+            jupyter nbconvert ipykernel
+
+      - name: Configure git
+        run: |
+          git config user.name "Jayanshu Badlani"
+          git config user.email "badlanijayanshu@gmail.com"
+
+      - name: Run 01_ab_test_analysis.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute --inplace \
+            --ExecutePreprocessor.timeout=300 \
+            notebooks/01_ab_test_analysis.ipynb
+
+      - name: Run 02_framework_demo.ipynb
+        run: |
+          jupyter nbconvert --to notebook --execute --inplace \
+            --ExecutePreprocessor.timeout=300 \
+            notebooks/02_framework_demo.ipynb
+
+      - name: Commit notebook outputs
+        run: |
+          git add notebooks/ visuals/ results/
+          git diff --cached --quiet && echo "Nothing to commit" || \
+            git commit -m "Add notebook outputs and results"
+          git push
