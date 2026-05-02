@@ -1,8 +1,6 @@
 # A/B Testing Framework
 
-A clean, reusable statistical A/B testing framework built in Python. Covers hypothesis testing (z-test, chi-square), confidence intervals, minimum detectable effect (MDE), sample size planning, and automated JSON reporting — all wrapped in a modular framework you can drop into any project.
-
----
+A clean, reusable statistical A/B testing framework built in Python. Covers hypothesis testing (z-test, chi-square), confidence intervals, minimum detectable effect (MDE), sample size planning, and automated JSON reporting, all wrapped in a modular framework you can drop into any project.
 
 ## Project Structure
 
@@ -21,8 +19,6 @@ ab-testing-framework/
 └── README.md
 ```
 
----
-
 ## Tech Stack
 
 | Category | Tools |
@@ -32,9 +28,7 @@ ab-testing-framework/
 | Visualization | matplotlib, seaborn |
 | Environment | Jupyter, Python 3.10+ |
 
----
-
-## Framework API — `framework/ab_test.py`
+## Framework API - `framework/ab_test.py`
 
 ### `run_ztest()`
 Two-proportion z-test for conversion rate experiments.
@@ -53,8 +47,6 @@ result = run_ztest(
 # Returns: z_stat, p_value, significant, absolute_lift, relative_lift, CIs
 ```
 
----
-
 ### `run_chi_square()`
 Chi-square test of independence on a 2×2 contingency table.
 
@@ -69,8 +61,6 @@ result = run_chi_square(
 )
 # Returns: chi2_stat, p_value, dof, significant, cramers_v
 ```
-
----
 
 ### `calculate_mde()`
 Minimum Detectable Effect for a given experiment setup.
@@ -87,8 +77,6 @@ result = calculate_mde(
 # Returns: mde_absolute, mde_relative
 ```
 
----
-
 ### `calculate_sample_size()`
 Required sample size per group to detect a target MDE.
 
@@ -104,8 +92,6 @@ result = calculate_sample_size(
 # Returns: n_per_group, total_n
 ```
 
----
-
 ### `generate_report()`
 Save experiment results as a structured JSON report.
 
@@ -120,8 +106,6 @@ generate_report(
 )
 ```
 
----
-
 ## Use Cases
 
 | Scenario | Test | Functions Used |
@@ -132,16 +116,12 @@ generate_report(
 | Pre-experiment planning | Sample size + MDE | `calculate_sample_size()`, `calculate_mde()` |
 | Automated reporting | JSON export | `generate_report()` |
 
----
-
 ## Notebooks
 
 | Notebook | Description |
 |---|---|
-| `01_ab_test_analysis.ipynb` | Full walkthrough of a landing page A/B test — z-test, chi-square, MDE, sample size planning, and 4 visualizations |
+| `01_ab_test_analysis.ipynb` | Full walkthrough of a landing page A/B test: z-test, chi-square, MDE, sample size planning, and 4 visualizations |
 | `02_framework_demo.ipynb` | Demonstrates all 5 framework functions across 3 realistic business scenarios with combined JSON report |
-
----
 
 ## How to Run
 
@@ -167,8 +147,6 @@ jupyter notebook
 ```bash
 python -m framework.ab_test
 ```
-
----
 
 ## Author
 
