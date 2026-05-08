@@ -29,7 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install pandas numpy scipy statsmodels matplotlib seaborn \
+          pip install -r requirements.txt \
             jupyter nbconvert ipykernel
 
       - name: Configure git
