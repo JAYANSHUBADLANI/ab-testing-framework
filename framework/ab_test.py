@@ -164,8 +164,8 @@ def generate_report(
     with open(path, "w") as f:
         json.dump(report, f, indent=2)
 
-    print(f"Report saved: {os.path.abspath(path)}")
-    return os.path.abspath(path)
+    print(f"Report saved: {path}")
+    return path
 
 
 if __name__ == "__main__":
