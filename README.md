@@ -151,4 +151,4 @@ python -m framework.ab_test
 ## Author
 
 **Jayanshu Badlani**
-[GitHub](https://github.com/JAYANSHUBADLANI) | [LinkedIn](https://linkedin.com/in/jayanshu-badlani)
+[GitHub](https://github.com/JAYANSHUBADLANI) | [LinkedIn](https://www.linkedin.com/in/jayanshu-badlani-b77478185)
